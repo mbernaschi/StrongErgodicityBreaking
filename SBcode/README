@@ -1,0 +1,61 @@
+There is a CPU and a GPU version. For each version there is a simple Makefile for the compilation.
+
+GPU USAGE:
+Usage: sbcuda <logSize> <T/Tc> <logIter> <log(last_tw)> <measTime> <numSamples> [<seed>]
+logSize=(base 2) log of one partition of the graph. Total size is equal to 2 x (1 << logSize)
+T/Tc=ratio with respect to the critical temperature
+logIter=(base 2) log of the total number of iterations (numIter = 1 << logIter;
+log(last_tw)=(base 2) log of the measures along time
+measTime=number of iterations between two measures of the energy
+numSamples = number of samples (use 1)
+seed = optional random seed. If not set, the program uses /dev/urandom
+
+CPU USAGE:
+Usage: sbcuda <logSize> <T/Tc> <logIter> <log(last_tw)> <measTime> <numSamples> [<cpu-list-file>]
+logSize=(base 2) log of one partition of the graph. Total size is equal to 2 x (1 << logSize)
+T/Tc=ratio with respect to the critical temperature
+logIter=(base 2) log of the total number of iterations (numIter = 1 << logIter;
+log(last_tw)=(base 2) log of the measures along time
+measTime=number of iterations between two measures of the energy
+numSamples = number of samples (use 1)
+seed = optional file name with the list of cpu to be used. 
+
+A quick test may be executed with the follonwing parameters (for the GPU version)
+sbcuda 21 .8 14 14 1024 1 811719
+
+it produces (on a TitanV GPU) the following output (the final total time is in microseconds).
+Please note that the CPU version produces a slightly different output
+----------------------------------------------------------------------------------------------------------------
+# SG +/-J on a RRG with d = 4
+# bipartite RRG of size  = 4194304 M 1 n# T = 0.800000 Tc   beta = 0.823099   prob2 = 79810677   prob4 = 2966143
+# logIter = 14   numIter = 16384
+# 1 <= tw <= 16384 in potenze di 2
+# measTime = 1024
+# numSamples = 1
+# seed = 811719
+# le parole sono a 64 bits
+# 1:t  2:ener  (3,4):q  (5,6):|q|  (7,8):q^2  9+log(tw)/2:C(t,tw)
+#Using 1 gpus, 1 chunks
+#12286951424 bytes of GPU global memory are available on gpu 0
+#Occupied 575602688 bytes of GPU global memory on gpu 0
+# Sample 0  Building graph.OK
+0 -6.03199e-05  	 1
+1024 -1.30487  	 0.00100695 0.0208325 0.0512191 0.111765 0.214677 1
+2048 -1.3057  	 0.000646807 0.0143546 0.0357527 0.0803277 0.159743 0.277177
+3072 -1.30602  	 0.000627145 0.0117087 0.0296182 0.0666012 0.134834 0.236982
+4096 -1.30614  	 0.000581704 0.0103669 0.0258931 0.0587882 0.120161 0.212139 1
+5120 -1.30627  	 0.000350811 0.00922307 0.0238755 0.0541699 0.110634 0.195513 0.320138
+6144 -1.30633  	 0.000369228 0.00872023 0.021893 0.0500934 0.103803 0.184459 0.299198
+7168 -1.30646  	 0.000424966 0.00837646 0.0208759 0.0472814 0.0974907 0.174831 0.28377
+8192 -1.3066  	 0.000269301 0.00774378 0.0196236 0.0452252 0.0936033 0.167241 0.271576
+9216 -1.3064  	 0.000297867 0.00738309 0.0190447 0.0432834 0.0893446 0.160752 0.260045
+10240 -1.30652  	 0.000357747 0.00705944 0.0180931 0.0413146 0.0859402 0.154633 0.250696
+11264 -1.30663  	 0.000349969 0.00685145 0.0176727 0.0399058 0.0836036 0.150309 0.242847
+12288 -1.3065  	 0.000340067 0.0064768 0.0167892 0.0386192 0.0809084 0.145991 0.235689
+13312 -1.3066  	 0.000321232 0.00657084 0.01635 0.0373757 0.0782003 0.141237 0.228834
+14336 -1.30662  	 0.000413768 0.00615487 0.015517 0.0359554 0.075792 0.137593 0.221699
+15360 -1.30658  	 0.000390261 0.00624809 0.0156146 0.035499 0.0740966 0.134024 0.216645
+16384 -1.3066  	 0.000269681 0.00595088 0.01522 0.0344525 0.0719818 0.131131 0.211858 1
+#Total time for main loop: 43494609.00000
+
+For further information: Massimo Bernaschi: massimo.bernaschi@cnr.it; Andrea Maiorano: andrea.maiorano@uniroma1.it
